@@ -1,0 +1,48 @@
+LOAN TABLE with applicant_num as primary key & type_id as a foreign key being mapped from table loan_type
+
+create table loan
+(uci number(16) not null,
+loan_amount number(9),
+loan_tenure number(4),
+balance number(11,2),
+applied_date date not null,
+total_num_of_emis number(4) not null,
+num_of_emis_paid number(4) not null,
+type_id number(2) not null,
+emi_amount number(11,2),
+applicant_num number(5) primary key,
+document blob,
+status varchar2(10)
+foreign key(type_id) references loan_type(type_id)
+);
+ 
+
+LOAN_TYPE TABLE with type_id as primary key 
+
+create table loan_type
+(type_id number(2) primary key,
+loan_type varchar2(15) not null,
+interest_rate number(4,2) not null,
+maximum_limit number(11,2) not null,
+minimum_limit number(6) not null
+);
+
+EMI_PAYMENT TABLE with trans_id as primary key
+
+create emi_payment
+(trans_id number(10) primary key,
+trans_amount number(20,2),
+trans_date_time timestamp(6) not null,
+loan_number number(6) not null
+foreign key(loan_number) references approved_loan(loan_number)
+);
+
+APPROVED_LOAN with loan_number as primary key
+
+create approved_loan
+(
+loan_number number(6) primary key,
+applicant_num number(5) not null
+foreign key(applicant_num) references loan(applicant_num)
+);
+  
